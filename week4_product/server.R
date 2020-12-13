@@ -3,7 +3,8 @@ library(tidyverse)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-
+    
+  
     dia_mod <- lm(price ~ carat, diamonds)
     
     dia_pred <- reactive({
@@ -44,5 +45,8 @@ shinyServer(function(input, output) {
     output$table <- DT::renderDT({
         dia_table()
     })
+    
+ 
+    
 
 })
