@@ -1,28 +1,72 @@
-week4_presentation
+week4_presentation : Diamonds
 ========================================================
 author: Andy
 date: Dec 14, 2020
 autosize: true
 
-First Slide
+
+Predict prices of a diamonds
 ========================================================
+  
+  
+There are some variables to determine prices of diamonds. We can refer to the data set 'diamonds' in the 'ggplot2' package.  
+[excerpt description and format from 'R documentation (?diamonds)']    
 
-For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+  
+A data frame with 53940 rows and 10 variables:
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+price   : price in US dollars (\$326???\$18,823)  
+carat   : weight of the diamond (0.2???5.01)  
+cut     : quality of the cut (Fair, Good, Very Good, Premium, Ideal)  
+color   : diamond colour, from D (best) to J (worst)  
+clarity : a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))  
+x       : length in mm (0???10.74)  
+y       : width in mm (0???58.9)  
+z       : depth in mm (0???31.8)  
+depth   : total depth percentage = z / mean(x, y) = 2 * z / (x + y) (43???79)  
+table   : width of top of diamond relative to widest point (43???95)  
 
-Slide With Code
+
+Let's start Explanatory Data Analysis
 ========================================================
 
 ```{r}
-summary(cars)
+library(tidyverse)
+library(GGally)
 ```
 
-Slide With Plot
+```{r}
+head(diamonds, 1)
+```
+
+  numeric variables : carat, depth, table, price, x, y, z  
+  factor  variables : cut, color, clarity  
+
+```{r}
+diamonds %>% select(price, carat) %>% ggpairs()
+```
+
+
+Build a model
 ========================================================
 
-```{r, echo=FALSE}
-plot(cars)
+```{r}
+mod <- lm(price ~ carat, diamonds)
+summary(mod)
 ```
+Adjusted R-squared of this model is 0.8493.  
+
+
+Plot
+========================================================
+
+```{r}
+diamonds %>% ggplot(aes(x = carat, y = price))+
+  geom_point(alpha = 0.5)+
+  geom_smooth(method = "lm", se = FALSE)+
+  labs(title = "relationship between carat and price of diamonds", x = "Carat", y = "Price")
+```
+
+
+
+
